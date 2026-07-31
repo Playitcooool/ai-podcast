@@ -15,6 +15,18 @@ git clone https://github.com/Playitcooool/ai-podcast.git \
 
 也可以直接把仓库中的整个目录复制到 `${CODEX_HOME:-$HOME/.codex}/skills/`。
 
+## 选题研究依赖：last30days
+
+选题阶段依赖 Codex 的 `last30days` skill，用来检索最近 30 天的真实讨论、平台信号和可核验来源。`ai-podcast` 会在它的基础上再补充中文互联网证据，并执行话题去重和安全检查。
+
+请先确保 `last30days` 已安装，然后在 Codex 中使用：
+
+```text
+使用 $last30days 研究最近 30 天适合年轻人讨论的校园、寝室、社交或网络话题，返回讨论信号、来源日期、可见互动和事实来源。
+```
+
+如果 `last30days` 不可用，不能把单篇新闻或模型记忆当成热度证据；应降低候选可信度，补充可访问的中文平台讨论和权威来源，或暂缓自动选题。
+
 ## 模型和路径配置
 
 安装 Qwen3-TTS 模型后设置：
