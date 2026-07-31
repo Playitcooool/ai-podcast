@@ -1,42 +1,47 @@
 # AI Podcast
 
-一个面向 Codex 的中文情绪播客生产 skill：从热点选题、证据核验、双人对话脚本，到稳定语音合成、音频审阅、主题图和 Bilibili 视频打包。
+An open-source Codex skill for producing evidence-backed Chinese AI podcasts:
+from current-topic research and balanced two-host scripts to stable voice
+synthesis, audio review, optional artwork, and Bilibili delivery.
 
-它特别适合定时任务：默认提供 `scheduled-safe` 音频配置，使用已验证的 Voice Clone 后端、单候选、有限解码长度，并把运行配置写入 timing manifest，降低 CustomVoice 在无人值守任务中长时间等待的风险。没有 GPT Image 2 时仍可生成完整音频交付包；进程级超时和自动回退由外层 scheduler 负责。
+It is designed for scheduled runs. The `scheduled-safe` profile uses the verified
+Voice Clone backend, one candidate, bounded decoding, and runtime diagnostics. If
+GPT Image 2/imagegen is unavailable, the workflow still delivers a complete
+audio package instead of failing the episode.
 
-## 安装
-
-将本仓库克隆到 Codex 的 skills 目录：
+## Install
 
 ```bash
 git clone https://github.com/Playitcooool/ai-podcast.git \
   "${CODEX_HOME:-$HOME/.codex}/skills/ai-podcast"
 ```
 
-也可以直接把仓库中的整个目录复制到 `${CODEX_HOME:-$HOME/.codex}/skills/`。
+Chinese documentation is available in [README.zh-CN.md](README.zh-CN.md).
 
-## 选题研究依赖：last30days
+## Topic research dependency
 
-选题阶段依赖 Codex 的 `last30days` skill，用来检索最近 30 天的真实讨论、平台信号和可核验来源。`ai-podcast` 会在它的基础上再补充中文互联网证据，并执行话题去重和安全检查。
+Topic selection uses the Codex `last30days` skill to research real discussion
+signals, recent activity, and source evidence from the last 30 days. `ai-podcast`
+then adds Chinese-language evidence, semantic duplicate checks, and safety review.
 
-请先确保 `last30days` 已安装，然后在 Codex 中使用：
+Make sure `last30days` is installed, then use it during research:
 
 ```text
-使用 $last30days 研究最近 30 天适合年轻人讨论的校园、寝室、社交或网络话题，返回讨论信号、来源日期、可见互动和事实来源。
+Use $last30days to find youth-relevant campus, dorm, friendship, dating, or online-culture topics discussed in the last 30 days. Return discussion signals, dates, visible engagement, and factual sources.
 ```
 
-如果 `last30days` 不可用，不能把单篇新闻或模型记忆当成热度证据；应降低候选可信度，补充可访问的中文平台讨论和权威来源，或暂缓自动选题。
+If `last30days` is unavailable, do not treat one article or model memory as proof
+of popularity. Add accessible Chinese-platform signals and authoritative sources,
+or pause automatic topic selection.
 
-## 模型和路径配置
-
-安装 Qwen3-TTS 模型后设置：
+## Model and output paths
 
 ```bash
 export AI_PODCAST_MODEL_ROOT=/path/to/qwen3-tts/models
 export AI_PODCAST_OUTPUT_ROOT=/path/to/ai-podcast-output
 ```
 
-目录应包含：
+The model directory should contain:
 
 ```text
 Qwen3-TTS-12Hz-1.7B-VoiceDesign/
@@ -44,7 +49,7 @@ Qwen3-TTS-12Hz-1.7B-Base/
 Qwen3-TTS-12Hz-1.7B-CustomVoice/
 ```
 
-## 定时任务推荐配置
+## Scheduled synthesis
 
 ```bash
 python scripts/synthesize_episode.py \
@@ -55,22 +60,37 @@ python scripts/synthesize_episode.py \
   --scheduled-safe
 ```
 
-需要更强情绪控制时，可以在人工试听后使用 `--backend custom`；不要把它作为无人值守任务的默认后端。没有 GPT Image 2 时跳过图片和视频步骤，保留 `audio/full-episode.wav`、脚本、证据和音频质检结果。
+Use `--backend custom` only after manual listening checks. For unattended jobs,
+the outer scheduler/worker should provide a process timeout and retry with clone.
 
-## 能力
+## Audio-only fallback
 
-- last30days 选题与中文证据核验
-- 话题历史和语义去重
-- 1500–2800 字双人普通话对话脚本
-- CustomVoice 情绪控制与 Voice Clone 稳定身份
-- 候选音频、音频质量指标和人工审阅记录
-- 动态停顿、房间底噪、母带处理
-- 可选的 16:9 主题图、H.264/AAC 视频和 Bilibili 发布文案
+When GPT Image 2/imagegen is unavailable, skip image and video rendering and set
+`delivery_mode` to `audio_only`. Deliver:
 
-## 开源协议
+- `audio/full-episode.wav`
+- the two-host script and evidence files
+- timing and audio-quality reports
+- Bilibili audio publishing copy
 
-MIT。Qwen3-TTS 模型及其权利归原作者所有，使用时请遵守对应模型许可证，并确保声音克隆获得授权。
+Do not create a fake placeholder image. Record `image_unavailable` in the
+manifest.
 
-## 宣传文案
+## What it includes
 
-> AI Podcast：把“热点选题 → 双人对谈 → 稳定语音 → Bilibili 成片或音频交付”串成一个可复用的 Codex skill。支持中文证据核验、语义去重、情绪化 CustomVoice、稳定 Voice Clone，以及没有 GPT Image 2 时的 audio-only fallback。适合做社会议题播客、AI 播客和持续更新的内容栏目。
+- youth-oriented topic discovery and Chinese-language evidence checks
+- semantic topic history and duplicate prevention
+- 1,500–2,800 character Mandarin two-host dialogue scripts
+- CustomVoice emotional control and stable Voice Clone identity
+- candidate audio, acoustic metrics, and listening-review records
+- dynamic pauses, room tone, mastering, and pronunciation checks
+- optional 16:9 artwork, H.264/AAC video, and Bilibili publishing copy
+
+## License
+
+MIT. Qwen3-TTS models are governed by their own licenses. Obtain authorization
+before cloning any real person's voice.
+
+## Promotion
+
+> AI Podcast connects “current topic → relatable two-host discussion → stable voice → Bilibili video or audio delivery” in one reusable Codex skill. It is built for youth-life topics such as dorms, roommates, group chats, friendship, dating, gaming, short-video culture, and AI tools.
