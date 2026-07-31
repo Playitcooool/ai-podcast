@@ -29,9 +29,10 @@ Do not assume a global Reddit, X, TikTok, Hacker News, or YouTube trend is impor
 
 Score each dimension from 0–10 and calculate:
 
-`total = everyday_relevance*0.25 + discussion_friction*0.25 + heat*0.20 + momentum*0.15 + chinese_fit*0.10 + verifiability*0.05`
+`total = youth_relevance*0.20 + emotional_resonance*0.25 + discussion_friction*0.20 + heat*0.15 + momentum*0.10 + chinese_fit*0.05 + verifiability*0.05`
 
-- `everyday_relevance`: whether the topic maps to a familiar daily scene, cost, choice, relationship, job, service, or family pressure;
+- `youth_relevance`: whether the topic maps to campus, dorm, friendship, dating, group chat, gaming, short-video, AI-tool, internship, or first-job life;
+- `emotional_resonance`: whether viewers recognize the awkwardness, annoyance, embarrassment, amusement, or small unfairness immediately;
 - `discussion_friction`: whether ordinary viewers can take two defensible sides immediately and want to tell a personal story or argue back;
 - `heat`: cross-source volume, visible engagement, and active discussion in the last 30 days;
 - `momentum`: recency, acceleration, repeated resurfacing, and expected near-term continuation;
@@ -42,7 +43,9 @@ Score each dimension from 0–10 and calculate:
 Favor topics that can be phrased as “你会怎么选？” or “这事到底该怪谁？”
 Avoid titles that sound like conference panels, policy white papers, or abstract
 concept explainers. The selected angle should contain one concrete human scene and
-one comment-bait question without manufacturing outrage.
+one comment-bait question without manufacturing outrage. Good starting patterns
+include “寝室里最烦人的行为是什么？” “这种人到底算不算没边界感？” and
+“你会直接说，还是选择忍到毕业？”
 
 Round the total to two decimal places. A score is a forecast, not a fact.
 
@@ -63,7 +66,7 @@ When the highest raw score fails a gate, record the reason and select the highes
 
 Include a compact table with:
 
-| Candidate | Daily relevance | Discussion friction | Heat | Momentum | Chinese fit | Verify | Total | Duplicate? | Decision |
-|---|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Candidate | Youth relevance | Resonance | Friction | Heat | Momentum | Chinese fit | Verify | Total | Duplicate? | Decision |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
 
 Follow it with the evidence URLs and one paragraph explaining uncertainty in the selected forecast.
