@@ -10,10 +10,20 @@ import hashlib
 import json
 import os
 import re
+import sys
 import time
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
+
+
+def _package_version(name: str) -> str:
+    try:
+        from importlib.metadata import version
+
+        return version(name)
+    except Exception:
+        return "unavailable"
 
 
 MODEL_ROOT = Path(
@@ -1897,6 +1907,12 @@ def main() -> None:
         },
         "device": device,
         "dtype": str(dtype),
+        "python_executable": sys.executable,
+        "package_versions": {
+            name: _package_version(name)
+            for name in ("torch", "qwen-tts", "torchaudio", "soundfile")
+        },
+        "reliability_profile": "scheduled-safe" if args.scheduled_safe else "interactive",
         "sample_rate": sample_rate,
         "line_count": len(rendered),
         "reference_generation_seconds": round(

@@ -249,23 +249,21 @@ python scripts/synthesize_episode.py --episode-dir <episode-folder> \
 `--backend clone` is the unattended compatibility baseline because it has been
 verified on the production machine and does not depend on CustomVoice instruction
 decoding. Use CustomVoice in a scheduled task only as an explicitly requested,
-non-default experiment. If CustomVoice is selected, it must be run in a separate
-worker with a hard per-line timeout; on timeout, OOM, missing dependency, or a
-non-readable WAV, terminate that worker and resume the episode with clone.
+non-default experiment. The bundled script does not supervise or kill its own
+process; if CustomVoice is selected, wrap it in a scheduler/worker that enforces
+a hard timeout and retries with clone after timeout, OOM, missing dependency, or
+a non-readable WAV.
 
 Never wait indefinitely for a TTS call. A scheduled run must:
 
 - skip any canonical line WAV that matches the current script hash and record it as
   resumed;
-- checkpoint after every line and write a heartbeat containing line index,
-  candidate number, backend, device, start time, and elapsed seconds;
-- cap generation length (`max_new_tokens`) and enforce a process-level timeout;
-- clear the MPS/CUDA cache after every candidate and restart the worker after a
-  failed or timed-out line;
+- cap generation length (`max_new_tokens`) in the bundled script;
+- have the outer scheduler checkpoint after every line, emit a heartbeat, enforce
+  a process-level timeout, and restart the worker after a failed or timed-out line;
 - preserve candidates and failure traces, then retry the failed line once with the
-  fallback backend; abort with `abandoned` only after both bounded attempts fail;
-- record `fallback_reason`, `timeout_seconds`, `max_new_tokens`, actual backend,
-  and worker exit status in `03-timing.json` and `03-audio-qc.json`.
+  fallback backend; record those orchestration fields alongside the script's
+  `scheduled_safe`, backend, and sampling fields.
 
 SoX is optional for this pipeline and its absence must not block synthesis. Do not
 require `flash-attn` on Apple Silicon/MPS; it is a CUDA optimization and is not a

@@ -2,7 +2,7 @@
 
 一个面向 Codex 的中文情绪播客生产 skill：从热点选题、证据核验、双人对话脚本，到稳定语音合成、音频审阅、主题图和 Bilibili 视频打包。
 
-它特别适合定时任务：默认提供 `scheduled-safe` 音频配置，使用已验证的 Voice Clone 后端、单候选、有限解码长度，并把运行配置写入 timing manifest，避免 CustomVoice 在无人值守任务中无限等待。
+它特别适合定时任务：默认提供 `scheduled-safe` 音频配置，使用已验证的 Voice Clone 后端、单候选、有限解码长度，并把运行配置写入 timing manifest，降低 CustomVoice 在无人值守任务中长时间等待的风险。进程级超时和自动回退由外层 scheduler 负责。
 
 ## 安装
 
