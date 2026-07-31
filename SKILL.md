@@ -52,7 +52,11 @@ materially different.
 Read [references/topic-selection.md](references/topic-selection.md) before research.
 Use the current date and the `last30days` skill for broad discovery. Supplement it
 with Chinese-language discussion signals and authoritative sources for factual
-verification. Do not infer Chinese popularity from global platforms alone.
+verification. Do not infer Chinese popularity from global platforms alone. Start
+from ordinary-life friction rather than academic concepts: wages and jobs,
+shopping and prices, delivery and commuting, housing and renting, family and
+relationships, school and parenting, mobile apps, local services, and small
+consumer disputes are preferred starting points.
 
 Build at least 3 candidates. For each candidate record:
 
@@ -61,18 +65,26 @@ Build at least 3 candidates. For each candidate record:
   when available;
 - verified facts, unresolved claims, source URLs, safety concerns, and duplicate
   result;
-- scores for heat, momentum, Chinese-internet fit, dialogue tension, and
-  verifiability.
+- scores for everyday relevance, discussion friction, heat, momentum, Chinese-
+  internet fit, and verifiability.
 
-Calculate:
+Calculate the down-market discussion score:
 
-`total = heat*0.30 + momentum*0.20 + chinese_fit*0.20 + tension*0.15 + verifiability*0.15`
+`total = everyday_relevance*0.25 + discussion_friction*0.25 + heat*0.20 + momentum*0.15 + chinese_fit*0.10 + verifiability*0.05`
 
 Choose the highest-scoring eligible topic. A score is the model's best current
 forecast, not a guarantee. Downgrade single-post virality, circular reporting,
 unverified allegations, rage bait, personal attacks, doxxing, and breaking events
 whose facts are too unstable. Prefer a verified structural question over gossip
 about a named person.
+
+Before reserving a topic, apply the plain-language test: a viewer should
+understand the conflict from the title alone, recognize a concrete scene from
+their own life, and know which side they might argue in a comment. Reject or
+reframe a topic when it needs specialist vocabulary, a policy lecture, or more
+than two sentences of background before the disagreement becomes visible. A
+structural issue may remain, but package it through one ordinary person's choice,
+bill, chat message, commute, purchase, family argument, or workplace moment.
 
 Announce the selected topic and continue production in the same turn. Save the full
 candidate table, evidence, duplicate checks, selection reason, and uncertainty in

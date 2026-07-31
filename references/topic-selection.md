@@ -25,17 +25,24 @@ Use `last30days` for broad discovery, then actively seek Chinese-language eviden
 
 Do not assume a global Reddit, X, TikTok, Hacker News, or YouTube trend is important in China. An imported topic needs at least one concrete Chinese-language discussion signal and a clear local analogue. If Chinese-platform evidence is unavailable, cap `中文互联网贴合度` at 5/10 and explain why.
 
-## Scoring
+## Scoring for broad, high-discussion reach
 
 Score each dimension from 0–10 and calculate:
 
-`total = heat*0.30 + momentum*0.20 + chinese_fit*0.20 + dialogue_tension*0.15 + verifiability*0.15`
+`total = everyday_relevance*0.25 + discussion_friction*0.25 + heat*0.20 + momentum*0.15 + chinese_fit*0.10 + verifiability*0.05`
 
+- `everyday_relevance`: whether the topic maps to a familiar daily scene, cost, choice, relationship, job, service, or family pressure;
+- `discussion_friction`: whether ordinary viewers can take two defensible sides immediately and want to tell a personal story or argue back;
 - `heat`: cross-source volume, visible engagement, and active discussion in the last 30 days;
 - `momentum`: recency, acceleration, repeated resurfacing, and expected near-term continuation;
 - `chinese_fit`: relevance to Chinese-language users, institutions, platforms, culture, or daily life;
 - `dialogue_tension`: at least two defensible positions with meaningful human stakes;
 - `verifiability`: reliable sources, manageable safety risk, and enough material for 6–12 minutes.
+
+Favor topics that can be phrased as “你会怎么选？” or “这事到底该怪谁？”
+Avoid titles that sound like conference panels, policy white papers, or abstract
+concept explainers. The selected angle should contain one concrete human scene and
+one comment-bait question without manufacturing outrage.
 
 Round the total to two decimal places. A score is a forecast, not a fact.
 
@@ -56,7 +63,7 @@ When the highest raw score fails a gate, record the reason and select the highes
 
 Include a compact table with:
 
-| Candidate | Heat | Momentum | Chinese fit | Tension | Verifiability | Total | Duplicate? | Decision |
-|---|---:|---:|---:|---:|---:|---:|---|---|
+| Candidate | Daily relevance | Discussion friction | Heat | Momentum | Chinese fit | Verify | Total | Duplicate? | Decision |
+|---|---:|---:|---:|---:|---:|---:|---:|---|---|
 
 Follow it with the evidence URLs and one paragraph explaining uncertainty in the selected forecast.
