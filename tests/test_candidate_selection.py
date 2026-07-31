@@ -14,7 +14,7 @@ SCRIPT_PATH = (
     Path(__file__).resolve().parents[1] / "scripts" / "synthesize_episode.py"
 )
 FIXTURE_EPISODE = Path(
-    "/Volumes/Samsung/Projects/emotional-podcast-video/"
+    "/tmp/ai-podcast-test-output/"
     "2026-07-30-shujia-haizi-shangwang-baohu-haishi-guankong"
 )
 
