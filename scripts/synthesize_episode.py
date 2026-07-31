@@ -28,8 +28,8 @@ def _package_version(name: str) -> str:
 
 MODEL_ROOT = Path(
     os.environ.get(
-        "EMOTIONAL_PODCAST_MODEL_ROOT",
-        "/Volumes/Samsung/Projects/qwen3-tts-voice-design-sample/models",
+        "AI_PODCAST_MODEL_ROOT",
+        str(Path.home() / ".cache" / "ai-podcast" / "models"),
     )
 )
 DEFAULT_VOICE_DESIGN_MODEL = MODEL_ROOT / "Qwen3-TTS-12Hz-1.7B-VoiceDesign"

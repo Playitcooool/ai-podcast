@@ -1,9 +1,9 @@
 ---
-name: emotional-podcast-video
-description: "Create publish-ready Bilibili two-voice discussion videos from current high-discussion social issues relevant to Chinese internet audiences. Use last30days plus Chinese-language evidence to research and score candidates, exclude previously selected or semantically similar topics through persistent history, automatically choose the strongest eligible topic, write a 6-12 minute balanced Mandarin dialogue, synthesize stable female and male voices, generate a titled 16:9 theme image, render and verify an H.264/AAC MP4, and package scripts, evidence, timing, manifests, and Bilibili publishing copy. Use for autonomous recurring social-issue podcasts, emotional discussions, and current-topic dialogue videos."
+name: ai-podcast
+description: "Create publish-ready Bilibili AI podcasts from current high-discussion social issues relevant to Chinese internet audiences. Research Chinese-language evidence, write a balanced Mandarin dialogue, synthesize stable voices, and deliver either a full H.264/AAC video when image generation is available or a reviewed audio package when it is not."
 ---
 
-# Social Discussion Podcast Video
+# AI Podcast
 
 Produce one autonomous, two-voice Bilibili discussion episode at a time. Research,
 score, select, and continue without asking the user to choose. Treat an explicitly
@@ -17,16 +17,16 @@ provided user topic as an override, but still run duplicate and safety checks.
 4. Create the episode folder and editorial brief.
 5. Write and validate the dialogue.
 6. Generate stable two-voice audio.
-7. Generate and inspect the titled theme image.
-8. Render and verify the MP4.
-9. Prepare Bilibili publishing materials.
-10. Pass all quality gates, then mark the episode and history entry complete.
+7. If GPT Image 2/imagegen is available, generate the titled theme image and render the MP4.
+8. Otherwise, deliver the audio-only package and record `imagegen_unavailable` in the manifest.
+9. Prepare Bilibili publishing materials appropriate to video or audio-only output.
+10. Pass the applicable quality gates, then mark the episode and history entry complete.
 
 Do not pause for topic approval and do not wait for “继续”.
 
 ## Topic history and duplicate control
 
-Use `${EMOTIONAL_PODCAST_OUTPUT_ROOT}/topic-history.json` as the persistent source
+Use `${AI_PODCAST_OUTPUT_ROOT}/topic-history.json` as the persistent source
 of truth. Resolve `scripts/topic_history.py` relative to this `SKILL.md`; use the
 script instead of editing history JSON directly. If the variable is unset, the
 script keeps its documented local-machine fallback.
@@ -82,7 +82,7 @@ candidate table, evidence, duplicate checks, selection reason, and uncertainty i
 
 Create a new folder under:
 
-`${EMOTIONAL_PODCAST_OUTPUT_ROOT}/YYYY-MM-DD-slug/`
+`${AI_PODCAST_OUTPUT_ROOT}/YYYY-MM-DD-slug/`
 
 Never overwrite an existing folder; append a numeric suffix when needed. Read
 [references/episode-manifest-schema.md](references/episode-manifest-schema.md) and
@@ -353,11 +353,11 @@ emphasis/pronunciation, and identity stability. The script writes WAV pairs and
 `comparison-manifest.json` under `audio/ab-voice-backends/`. Do not infer a listening
 winner from waveform metrics alone.
 
-Use local models rooted at `${EMOTIONAL_PODCAST_MODEL_ROOT}`:
+Use local models rooted at `${AI_PODCAST_MODEL_ROOT}`:
 
-- `${EMOTIONAL_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-VoiceDesign`
-- `${EMOTIONAL_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-Base`
-- `${EMOTIONAL_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-CustomVoice`
+- `${AI_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-VoiceDesign`
+- `${AI_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-Base`
+- `${AI_PODCAST_MODEL_ROOT}/Qwen3-TTS-12Hz-1.7B-CustomVoice`
 
 Prefer MPS on Apple Silicon. Never clone a real person's voice without authorization.
 Voice generation remains stochastic; do not promise identical voices across episodes.
@@ -369,9 +369,10 @@ Require `audio/references/`, per-line WAV files, `audio/full-episode.wav`,
 actual per-line wall-clock measurements, audio duration, sample rate, device, and
 real-time factor.
 
-## Theme image
+## Optional theme image and video
 
-After topic selection, use the `imagegen` skill to create one original 16:9 image.
+After topic selection, detect whether the `imagegen` skill (GPT Image 2) is
+available. If it is available, create one original 16:9 image.
 Display the exact selected Chinese episode title once, prominently and legibly in
 the exact visual center. Keep every other text element out: no subtitle, source
 label, logo, watermark, decorative word, or pseudo-text. Avoid celebrity likenesses
@@ -381,10 +382,18 @@ Save `04-theme-image.png` and `04-image-prompt.md`. Inspect the generated image.
 Regenerate it if any title character is malformed, missing, duplicated, illegible,
 or off-center, or if extra text or visual artifacts appear.
 
+If imagegen is unavailable, do not fail the episode: write
+`04-image-unavailable.json` with `{"available":false,"reason":"imagegen_unavailable"}`
+and continue with the audio-only package. Do not invent a placeholder image.
+
 ## Render and verify
 
+Only run the video renderer when a valid theme image exists. For audio-only output,
+skip the MP4 gate and mark `delivery_mode: "audio_only"` in the manifest and
+timing report.
+
 Resolve and run `scripts/build_video.py` relative to this `SKILL.md`. Create
-`05-emotional-podcast.mp4`, `05-render-report.json`, and
+`05-ai-podcast.mp4`, `05-render-report.json`, and
 `05-render-command.txt`.
 
 The renderer must verify:
@@ -426,9 +435,10 @@ episode-folder/
 │   ├── candidates/
 │   ├── line-001-female.wav
 │   └── full-episode.wav
-├── 04-theme-image.png
+├── 04-theme-image.png                 # optional when imagegen is unavailable
+├── 04-image-unavailable.json          # use instead of the image when unavailable
 ├── 04-image-prompt.md
-├── 05-emotional-podcast.mp4
+├── 05-ai-podcast.mp4                  # optional for audio-only delivery
 ├── 05-render-report.json
 ├── 05-render-command.txt
 └── 06-bilibili-publish.md
@@ -474,13 +484,16 @@ Before completion, verify:
 - `02-editorial-review.json` proves all semantic checks passed, and
   `scripts/audio_review.py check` proves every rendered line was reviewed, all four
   performance ratings are at least 3, and every line passed;
-- actual audio and video duration is 6–12 minutes;
-- all WAV files are readable and the MP4 renderer validation passes;
-- the image is original, 16:9, and displays the exact centered title once;
+- actual audio duration is 6–12 minutes;
+- all WAV files are readable; when `delivery_mode` is `video`, the MP4 renderer
+  validation passes;
+- when `delivery_mode` is `video`, the image is original, 16:9, and displays the
+  exact centered title once; when `delivery_mode` is `audio_only`, the manifest
+  records why imagegen was unavailable;
 - timing uses actual wall-clock measurements;
 - publishing copy includes sources and AI disclosure without unsupported claims;
 - manifest and topic history both end in `complete`.
 
-Fix failed gates before reporting completion. Return clickable links to the MP4,
-full audio, theme image, script, timing report, editorial brief, and publishing
-package.
+Fix failed applicable gates before reporting completion. Return clickable links to
+the full audio, script, timing report, editorial brief, and publishing package;
+include the MP4 and theme image only for video delivery.

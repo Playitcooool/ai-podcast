@@ -19,8 +19,8 @@ from zoneinfo import ZoneInfo
 
 DEFAULT_EPISODES_ROOT = Path(
     os.environ.get(
-        "EMOTIONAL_PODCAST_OUTPUT_ROOT",
-        "/Volumes/Samsung/Projects/emotional-podcast-video",
+        "AI_PODCAST_OUTPUT_ROOT",
+        str(Path.home() / "ai-podcast-output"),
     )
 )
 DEFAULT_HISTORY = DEFAULT_EPISODES_ROOT / "topic-history.json"
@@ -68,7 +68,7 @@ def empty_history() -> dict[str, Any]:
     return {
         "version": 2,
         "description": (
-            "Persistent selected-topic history for emotional-podcast-video. "
+            "Persistent selected-topic history for ai-podcast. "
             "All non-abandoned entries are unavailable for automatic reuse."
         ),
         "entries": [],
