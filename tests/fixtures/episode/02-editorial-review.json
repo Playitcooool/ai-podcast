@@ -1,0 +1,14 @@
+{
+  "review_schema_version": 1,
+  "reviewed_at": "2026-07-30T09:55:00+08:00",
+  "script_sha256": "9719ed3d653c82bb57dc53493c9c627d8afe873c198da5ac8178b3caa81ea03b",
+  "evidence_sha256": "50891435c6d16ebd5863e0a0333095ee518cf4fc31840b15ac30b4a45f11e8d3",
+  "checks": {
+    "opening_transition_semantics": {"status":"passed","notes":"导入语为中性现实场景，120字；第二项由男声承接，先解释风险为何复杂，再界定讨论范围，没有直接给结论。"},
+    "turn_length_exceptions": {"status":"passed","notes":"全稿约1760字；导入语120字；第6、9、11、15项为8至39字短反应以打散节奏，其余讨论项均在40至120字标准区间内，无超过180字的异常长项。"},
+    "semantic_progression": {"status":"passed","notes":"对话依次推进风险、分层治理、假设场景、反例、两次观点修正、三层规则和制度追问；相邻move不重复。"},
+    "fact_source_alignment": {"status":"passed","notes":"仅两项claim_type为fact，分别引用E1和E2；E1、E2为已打开核验的独立中文报道；例子明确为假设，uncertainty项没有借用source_ids。"},
+    "tts_text_accuracy": {"status":"passed","notes":"含AI、清朗和数字表达的事实项提供tts_text与pronunciation_note；tts_text将AI展开为人工智能并保持事实含义不变。"},
+    "closing_language": {"status":"passed","notes":"末四项严格为综合/收束/落点/邀请，结尾保留条件与不确定性，给出一项非说教式行动，并以具体开放问题结束。"}
+  }
+}

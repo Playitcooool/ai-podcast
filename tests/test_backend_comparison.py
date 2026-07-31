@@ -15,10 +15,7 @@ import pytest
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SYNTHESIS_PATH = SKILL_DIR / "scripts" / "synthesize_episode.py"
 COMPARISON_PATH = SKILL_DIR / "scripts" / "compare_voice_backends.py"
-FIXTURE_EPISODE = Path(
-    "/tmp/ai-podcast-test-output/"
-    "2026-07-30-shujia-haizi-shangwang-baohu-haishi-guankong"
-)
+FIXTURE_EPISODE = Path(__file__).resolve().parent / "fixtures" / "episode"
 
 
 def load_module(path: Path, name: str) -> ModuleType:

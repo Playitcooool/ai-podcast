@@ -13,10 +13,7 @@ import pytest
 SCRIPT_PATH = (
     Path(__file__).resolve().parents[1] / "scripts" / "synthesize_episode.py"
 )
-FIXTURE_EPISODE = Path(
-    "/tmp/ai-podcast-test-output/"
-    "2026-07-30-shujia-haizi-shangwang-baohu-haishi-guankong"
-)
+FIXTURE_EPISODE = Path(__file__).resolve().parent / "fixtures" / "episode"
 
 
 def load_synthesis_module() -> ModuleType:

@@ -15,8 +15,7 @@ SCRIPT_PATH = (
     Path(__file__).resolve().parents[1] / "scripts" / "synthesize_episode.py"
 )
 FIXTURE_EPISODE = Path(
-    "/tmp/ai-podcast-test-output/"
-    "2026-07-30-shujia-haizi-shangwang-baohu-haishi-guankong"
+    Path(__file__).resolve().parent / "fixtures" / "episode"
 )
 
 
@@ -371,6 +370,10 @@ def test_backend_model_calls_without_loading_real_models(
     copy_episode_inputs(episode)
     custom_model = tmp_path / "Qwen3-TTS-12Hz-1.7B-CustomVoice"
     custom_model.mkdir()
+    design_model = tmp_path / "Qwen3-TTS-12Hz-1.7B-VoiceDesign"
+    base_model = tmp_path / "Qwen3-TTS-12Hz-1.7B-Base"
+    design_model.mkdir()
+    base_model.mkdir()
     calls = install_fake_runtime(monkeypatch, synth)
     monkeypatch.setattr(
         sys,
@@ -385,6 +388,10 @@ def test_backend_model_calls_without_loading_real_models(
             "advisory",
             "--custom-voice-model",
             str(custom_model),
+            "--voice-design-model",
+            str(design_model),
+            "--base-model",
+            str(base_model),
         ],
     )
 
