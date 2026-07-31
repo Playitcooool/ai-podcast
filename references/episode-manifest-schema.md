@@ -44,7 +44,8 @@ topic-history lifecycle aligned.
     "audio": "audio/full-episode.wav",
     "theme_image": "04-theme-image.png",
     "image_prompt": "04-image-prompt.md",
-    "video": "05-emotional-podcast.mp4",
+    "delivery_mode": "video",
+    "video": "05-ai-podcast.mp4",
     "render_report": "05-render-report.json",
     "render_command": "05-render-command.txt",
     "publishing": "06-bilibili-publish.md"
@@ -79,6 +80,11 @@ topic-history lifecycle aligned.
   }
 }
 ```
+
+When GPT Image 2/imagegen is unavailable, set `delivery_mode` to `audio_only`,
+omit `theme_image`, `video`, `render_report`, and `render_command`, and include
+`image_unavailable` with the reason. Audio, script, timing, and audio QC remain
+required.
 
 Keep artifact paths relative to the episode folder. Use `in_production` throughout
 production and update `stage` as gates pass. Set `complete` only after every final

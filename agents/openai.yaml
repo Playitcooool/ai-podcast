@@ -1,4 +1,4 @@
 interface:
-  display_name: "社会议题双声线播客"
-  short_description: "自动选取中文互联网热点并制作双声线B站讨论视频"
-  default_prompt: "使用 $emotional-podcast-video，自动选择今天最值得讨论且未重复的社会议题，并完成双声线 B 站视频。"
+  display_name: "AI Podcast"
+  short_description: "自动选题并生成双声线 AI 播客或音频交付包"
+  default_prompt: "使用 $ai-podcast，自动选择今天最值得讨论且未重复的社会议题；有 GPT Image 2 就生成视频，没有则生成完整音频包。"
